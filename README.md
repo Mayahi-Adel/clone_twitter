@@ -1,0 +1,1 @@
+A simplified Twitter clone in Node.js with a MySQL database using Express, jwt and crypt
