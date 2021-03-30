@@ -6,7 +6,8 @@ const router = require('./routes/routes');
 
 const server = express();
 
-const PORT = 3000  || process.env.PORT;
+
+const PORT = 3000;
 
 server.engine('ejs', ejs.renderFile);
 server.set("views", "./src/views");

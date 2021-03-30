@@ -9,11 +9,11 @@ router.get("/signup/", usersControllers.signup)
 router.post("/signup/", usersControllers.newAccount)
 
 router.get("/login", usersControllers.login);
-// router.post("/login", usersControllers.authenticate);
+router.post("/login", usersControllers.authenticate);
 // router.get("/logout", usersControllers.logout);
 
 
 // home page (20 latest tweets)
-router.get("/", tweetsControllers.findAll);
+router.get("/", usersControllers.login);
 
 module.exports = router;

@@ -1,9 +1,14 @@
-const bcrypt = require("bcrypt");
+const express = require('express');
+const dotenv = require('dotenv');
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const Users = require("../models/users.model");
 
 
 
+dotenv.config();
+
+const MAX_AGE = Math.floor(Date.now() / 1000) + (60 * 60);
 exports.signup = (request, response) => {
     response.render("signup.ejs");
 }
@@ -53,9 +58,49 @@ exports.newAccount = (request, response) => {
         }
     })
 }
-
+// Redirect after create a new account
 exports.login = (request, response) => {
     response.render("login.ejs");
+}
+
+// login
+exports.authenticate = (request, response) => {
+    const { username, password } = request.body;
+
+    Users.getByUsername(username, (error, result) => {
+        if(error){
+            response.send(error.message)
+        } else if (result.length == 0){
+            response.send("this user doesn't exist !")
+        } else {
+            const hash = result[0].password;
+            bcrypt.compare(password, hash, (error, isCorrect) => {
+                if(error){
+                    response.send(error.message)
+                } 
+                
+                if (!isCorrect){
+                    response.send("invalid pasword !");
+                } else {
+                    const user = {
+                        firstname: result[0].firstname,
+                        username: result[0].username,
+                        exp: MAX_AGE
+                    }
+
+                    jwt.sign(user, process.env.SECRET_JWT, (error, token) => {
+                        if(error){
+                            response.send(error.message)
+                        } 
+                        request.user = user;
+                        response.cookie("authcookie", token, { maxAge: 60*60 });
+                        response.redirect("/");
+                        
+                    })
+                }
+            })
+        }
+    })
 }
 
 
