@@ -12,8 +12,8 @@ exports.getByUsername = (username, callback) => {
 }
 
 exports.create = (user, callback) => {
-    db.query(`INSERT INTO Users (firstname, lastname, birthday, username, email, password, phone, city) VALUES 
-    ("${user.firstname}", "${user.lastname}", "${user.birthday}", "${user.username}", "${user.email}", "${user.password}", "${user.phone}", "${user.city}")`, (error, result) => {
+    db.query(`INSERT INTO Users (firstname, lastname, birthday, username, email, password, phone, city, avatar) VALUES 
+    ("${user.firstname}", "${user.lastname}", "${user.birthday}", "${user.username}", "${user.email}", "${user.password}", "${user.phone}", "${user.city}", "${user.avatar}")`, (error, result) => {
         if(error){
             console.log("error: ", error)
             callback(error, null);

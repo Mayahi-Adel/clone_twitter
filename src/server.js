@@ -1,6 +1,7 @@
 // Imports
 const express = require('express');
 const ejs = require('ejs');
+const cookieParser = require('cookie-parser');
 const router = require('./routes/routes');
 
 
@@ -15,6 +16,7 @@ server.set("views", "./src/views");
 server.use(express.static("./src/public"))
 
 server.use(express.urlencoded({ extended: true }));
+server.use(cookieParser());
 
 server.use(router)
 

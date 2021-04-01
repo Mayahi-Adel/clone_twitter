@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken"); 
 const Users = require("../models/users.model");
 
 
@@ -9,12 +9,13 @@ const Users = require("../models/users.model");
 dotenv.config();
 
 const MAX_AGE = Math.floor(Date.now() / 1000) + (60 * 60);
+
 exports.signup = (request, response) => {
     response.render("signup.ejs");
 }
 
 exports.newAccount = (request, response) => {
-    const { firstname, lastname, birthday, city, phone, email, username, password } = request.body;
+    const { firstname, lastname, birthday, city, phone, email, username, password, avatar } = request.body;
 
     Users.getByUsername(username, (error, result) => {
         if(error){
@@ -45,7 +46,8 @@ exports.newAccount = (request, response) => {
                     phone,
                     email,
                     username,
-                    password: hash
+                    password: hash,
+                    avatar
                 }
 
                 Users.create(newUser, (error, result) => {
@@ -83,6 +85,7 @@ exports.authenticate = (request, response) => {
                     response.send("invalid pasword !");
                 } else {
                     const user = {
+                        id: result[0].id,
                         firstname: result[0].firstname,
                         username: result[0].username,
                         exp: MAX_AGE
@@ -93,7 +96,7 @@ exports.authenticate = (request, response) => {
                             response.send(error.message)
                         } 
                         request.user = user;
-                        response.cookie("authcookie", token, { maxAge: 60*60 });
+                        response.cookie("authcookie", token, { maxAge: 60*60*1000 });
                         response.redirect("/");
                         
                     })
@@ -101,6 +104,11 @@ exports.authenticate = (request, response) => {
             })
         }
     })
+}
+
+exports.logout = (request, response) => {
+    response.clearCookie("authcookie");
+    response.redirect("/");
 }
 
 
