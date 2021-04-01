@@ -36,10 +36,19 @@
           <img src="/images/user.png" alt="">
           <h2>My Tweets</h2>
         </a>
-        <a href="/logout">
-          <img src="/images/logout.png" alt="">
-          <h2>Logout</h2>
-        </a>
+
+        <%  if (user) { %>
+          <a href="/logout">
+            <img src="/images/logout.png" alt="">
+            <h2> Logout</h2>
+          </a>
+        <% } else { %>
+          <a href="/login">
+            <img src="/images/logout.png" alt="">
+            <h2> Login</h2>
+          </a>
+        <% } %> 
+
       </div>
     </div>
 
@@ -83,10 +92,10 @@
 
 
         <div class="comments-comment">
-          <a href="/user/<%= tweet.userId %>"><img src="/images/avatar.jpeg" /></a>
+          <a href=""><img src="/images/avatar.jpeg" /></a>
           <div class="comments-comment-content">
             <div class="comments-comment-content-nameDate">
-              <a href="/user/<%= tweet.userId %>">
+              <a href="">
                 <h3 class="comments-comment-content-username"><%= tweet.username %></h3>
               </a>
               <span class="comments-comment-content-date"><%= tweet.createdAt %></span>

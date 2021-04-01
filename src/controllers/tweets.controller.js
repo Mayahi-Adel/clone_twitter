@@ -38,9 +38,6 @@ exports.addTweet = (request, response) => {
 
 }
 
-// exports.profil = (req, res) => {
-//     res.render("profil.ejs");
-// }
 
 exports.myTweets = (req, res) => {
     const id = req.params.id;
@@ -54,7 +51,8 @@ exports.myTweets = (req, res) => {
                 firstname: data[0].firstname,
                 lastname: data[0].lastname,
                 city: data[0].city,
-                username: data[0].username
+                username: data[0].username,
+                id: data[0].userId
             }
             
             res.render("profile.ejs", { data, user });
@@ -66,9 +64,7 @@ exports.updateTweet = (req, res) => {
     const tweetId = req.body.tweetId;
     const content = req.body.message;
     const userId = req.body.user; 
-    console.log('user :' , userId)
-    console.log("tweet: ", tweetId)
-
+   
 
     Tweets.update(tweetId, content, (error, result) => {
         if(error){
@@ -83,8 +79,6 @@ exports.deleteTweet = (req, res) => {
     const userId = req.params.userId;
     const tweetId = req.params.tweetId;
 
-    console.log(userId);
-    console.log(tweetId);
     Tweets.delete(tweetId, (error, result) => {
         if(error){
             req.send(error.message)
