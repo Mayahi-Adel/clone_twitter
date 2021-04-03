@@ -15,16 +15,19 @@
   <div class="home">
     <img class="home-image" src="/images/logoTwitter.png" alt="logoTwitter">
     <h1 class="home-title">Create your account</h1>
+
+    <h3 class="home-error"><%= alerts_warning[0] %></h3>
+
   </div>
 
   <form class="form" action="/signup" method="post">
     <div class="form-input">
       <label for="first_name">First Name</label>
-      <input type="text" name="first_name" id="first_name" required>
+      <input type="text" name="firstname" id="firstname" required>
     </div>
     <div class="form-input">
       <label for="last_name">Last Name</label>
-      <input type="text" name="last_name" id="last_name" required>
+      <input type="text" name="lastname" id="lastname" required>
     </div>
 
     <div class="form-input">
@@ -44,7 +47,7 @@
 
     <div class="form-input">
       <label for="telephone">Phone</label>
-      <input type="tel" name="telephone" id="telephone" pattern="[0-9]{10}" maxlength="10" minlength="10">
+      <input type="tel" name="phone" id="phone" pattern="[0-9]{10}" maxlength="10" minlength="10">
     </div>
 
     <div class="form-input">
@@ -58,9 +61,15 @@
     </div>
 
     <div class="form-input">
+      <label for="photo">Photo</label>
+      <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+    </div>
+
+    
+    <!-- <div class="form-input">
       <label for="picture">Picture</label>
       <input type="url" name="picture" id="picture" required>
-    </div>
+    </div> -->
 
     <button type="submit">Submit</button>
   </form>

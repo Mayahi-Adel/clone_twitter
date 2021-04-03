@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitter</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="/images/iconTwitter.png">
+</head>
+
+<body>
+  <section class="section-accueil">
+
+    <div class="tweet-navigation">
+      <img class="tweet-navigation-image" src="/images/logoTwitter.png" alt="">
+      <div class="tweet-navigation-link">
+        <a href="/">
+          <img src="/images/home-run.png" alt="">
+          <h2>Home</h2>
+        </a>
+        <a href="">
+          <img src="/images/hastag.png" alt="">
+          <h2>Explore</h2>
+        </a>
+        <a href="">
+          <img src="/images/bookmark.png" alt="">
+          <h2>Bookmarks</h2>
+        </a>
+
+        <%  if (connectedUserId) { %>
+          <a href="/user/<%= connectedUserId %>">
+        <% } else { %>
+          <a href="#">
+          <% } %>
+          <img src="/images/user.png" alt="">
+          <h2>My Tweets</h2>
+        </a>
+
+        <a href="/logout">
+          <img src="/images/logout.png" alt="">
+          <h2>Logout</h2>
+        </a>
+      </div>
+    </div>
+    <div class="tweet-container">
+      <div class="tweet-container-title">
+        <h3><%= user.firstname +" "+user.lastname %></h3>
+      </div>
+      <div class="tweet-container-profile">
+        <div class="tweet-container-profile-background">
+          <img src="" alt="">
+        </div>
+        <div class="tweet-container-profile-picture">
+          <img src="/images/avatar1.jpeg" alt="">
+        </div>
+        <div class="tweet-container-profile-infos">
+          <h3><%= user.firstname +" "+user.lastname %></h3>
+          <h4>@<%= user.firstname +"_"+user.lastname %></h4>
+          <p><%= user.city %></p>
+        </div>
+      </div>
+
+
+     
+      <%  if ( data.length !== 0) { %>  
+
+      <div class="comments">
+
+      <%  data.forEach(tweet => {  %>
+
+        <div class="comments-comment">
+          <a href=""><img src="/images/avatar1.jpeg" alt=""></a>
+          <div class="comments-comment-content">
+            <div class="comments-comment-content-nameDate">
+              <a href="">
+                <h3 class="comments-comment-content-username"><%= user.username %></h3>
+              </a>
+              <span class="comments-comment-content-date"> <%= tweet.createdAt %></span>
+            </div>
+            <p class="comments-comment-content-text"> <%= tweet.content %>  </p>
+
+
+            <% if (connectedUserId) { %> 
+
+              <%  if (tweet.userId == connectedUserId) { %>
+                <span class="config">
+  
+                    <a href="/tweet/delete/<%= tweet.userId %>/<%= tweet.id %>/<%= user.id %>"> <img src="/images/cancel.png" alt="delete" class="icone delete"> </a>
+  
+                </span>
+
+                <form action="/tweet/edit" method="post" class="tweet-container-form " style="margin-top: 0px">
+                  <div class="tweet-container-message">
+                    <label for="message"></label>
+                    <div class="tweet-container-text">
+                      <textarea name="message" id="message" placeholder="<%= tweet.content %>"></textarea>
+                      <input type="text" name="tweetId" id="tweetId" value="<%= tweet.id %>" class="visibility">
+                      <input type="text" name="user" id="user" value="<%= tweet.userId %>" class="visibility">
+                    </div>
+                    
+            
+                  </div>
+                  <div class="tweet-container-button">
+                    <button type="submit" class="tweet-button">Edit</button>
+                  </div>
+            
+                </form>
+
+              <% } 
+
+            } %>
+            
+          </div>
+        </div>
+
+      <% }) %>
+
+      </div>
+
+      <% } %>
+      <!--  -->
+
+    </div>
+
+    <div class="tweet-search"></div>
+
+  </section>
+  <script src="/js/script.js"></script>
+</body>
+
+</html>
