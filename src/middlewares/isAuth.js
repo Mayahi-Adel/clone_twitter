@@ -30,6 +30,7 @@ const isAuth = (request, response, next) => {
                     response.send("Session expired. Please try to login again")
                 } else {
                     request.user = { id, username };
+                    response.cookie("user", user.id, { maxAge: 60*60*1000 });
                     next();
                 }
             }

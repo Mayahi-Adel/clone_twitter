@@ -10,23 +10,25 @@ dotenv.config();
 
 const MAX_AGE = Math.floor(Date.now() / 1000) + (60 * 60);
 
-exports.signup = (request, response) => {
-    response.render("signup.ejs");
+exports.signup = async (request, response) => {
+    const alerts_warning = await request.consumeFlash("warning");
+    response.render("signup.ejs", { alerts_warning });
 }
 
 exports.newAccount = (request, response) => {
     const { firstname, lastname, birthday, city, phone, email, username, password, avatar } = request.body;
 
-    Users.getByUsername(username, (error, result) => {
+    Users.getByUsername(username, async (error, result) => {
         if(error){
             response.send(error.message);
         }
     
         if(result.length !== 0){
-            response.send("Username already exists !");
+            await request.flash("warning", "Username already exists !")
+            response.redirect("/signup");
         }
 
-        // if the username dont exists => we can create the account
+        // if the username doesn't exist => we can create the account
         // crypt password
 
         else { 
@@ -61,19 +63,22 @@ exports.newAccount = (request, response) => {
     })
 }
 // Redirect after create a new account
-exports.login = (request, response) => {
-    response.render("login.ejs");
+exports.login = async (request, response) => {
+    const alerts_warning = await request.consumeFlash("warning");
+    console.log(alerts_warning)
+    response.render("login.ejs", { alerts_warning });
 }
 
 // login
 exports.authenticate = (request, response) => {
     const { username, password } = request.body;
 
-    Users.getByUsername(username, (error, result) => {
+    Users.getByUsername(username, async (error, result) => {
         if(error){
             response.send(error.message)
         } else if (result.length == 0){
-            response.send("this user doesn't exist !")
+            await request.flash("warning", "this user doesn't exist !");
+            response.redirect("/login");
         } else {
             const hash = result[0].password;
             bcrypt.compare(password, hash, (error, isCorrect) => {
@@ -82,7 +87,8 @@ exports.authenticate = (request, response) => {
                 } 
                 
                 if (!isCorrect){
-                    response.send("invalid pasword !");
+                    request.flash("warning", "invalid pasword !")
+                    response.redirect("/login");
                 } else {
                     const user = {
                         id: result[0].id,

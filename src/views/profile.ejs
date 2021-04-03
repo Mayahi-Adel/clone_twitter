@@ -29,8 +29,8 @@
           <h2>Bookmarks</h2>
         </a>
 
-        <%  if (user) { %>
-          <a href="/user/<%= user.id %>">
+        <%  if (connectedUserId) { %>
+          <a href="/user/<%= connectedUserId %>">
         <% } else { %>
           <a href="#">
           <% } %>
@@ -62,9 +62,13 @@
         </div>
       </div>
 
+
+     
+      <%  if ( data.length !== 0) { %>  
+
       <div class="comments">
 
-        <%  data.forEach(tweet => {  %>
+      <%  data.forEach(tweet => {  %>
 
         <div class="comments-comment">
           <a href=""><img src="/images/avatar1.jpeg" alt=""></a>
@@ -76,42 +80,47 @@
               <span class="comments-comment-content-date"> <%= tweet.createdAt %></span>
             </div>
             <p class="comments-comment-content-text"> <%= tweet.content %>  </p>
-            <span class="config">
-              <%  if (tweet.userId == user.id) { %>
 
-                <a href="/tweet/delete/<%= tweet.userId %>/<%= tweet.id %>"> <img src="/images/cancel.png" alt="delete" class="icone delete"> </a>
 
-               <% } %> 
-              
-            </span>
+            <% if (connectedUserId) { %> 
 
-            <form action="/tweet/edit" method="post" class="tweet-container-form " style="margin-top: 0px">
-              <div class="tweet-container-message">
-                <label for="message"></label>
-                <div class="tweet-container-text">
-                  <textarea name="message" id="message" placeholder="<%= tweet.content %>"></textarea>
-                  <input type="text" name="tweetId" id="tweetId" value="<%= tweet.id %>" class="visibility">
-                  <input type="text" name="user" id="user" value="<%= tweet.userId %>" class="visibility">
-                </div>
-                
-        
-              </div>
-              <div class="tweet-container-button">
-                <button type="submit" class="tweet-button">Edit</button>
-              </div>
-        
-            </form>
+              <%  if (tweet.userId == connectedUserId) { %>
+                <span class="config">
+  
+                    <a href="/tweet/delete/<%= tweet.userId %>/<%= tweet.id %>/<%= user.id %>"> <img src="/images/cancel.png" alt="delete" class="icone delete"> </a>
+  
+                </span>
+
+                <form action="/tweet/edit" method="post" class="tweet-container-form " style="margin-top: 0px">
+                  <div class="tweet-container-message">
+                    <label for="message"></label>
+                    <div class="tweet-container-text">
+                      <textarea name="message" id="message" placeholder="<%= tweet.content %>"></textarea>
+                      <input type="text" name="tweetId" id="tweetId" value="<%= tweet.id %>" class="visibility">
+                      <input type="text" name="user" id="user" value="<%= tweet.userId %>" class="visibility">
+                    </div>
+                    
+            
+                  </div>
+                  <div class="tweet-container-button">
+                    <button type="submit" class="tweet-button">Edit</button>
+                  </div>
+            
+                </form>
+
+              <% } 
+
+            } %>
             
           </div>
         </div>
 
-         <% }) %>
-
-       
-
-       
+      <% }) %>
 
       </div>
+
+      <% } %>
+      <!--  -->
 
     </div>
 

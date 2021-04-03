@@ -28,6 +28,7 @@
           <img src="/images/bookmark.png" alt="">
           <h2>Bookmarks</h2>
         </a>
+
         <%  if (user) { %>
           <a href="/user/<%= user.id %>">
         <% } else { %>
@@ -92,10 +93,10 @@
 
 
         <div class="comments-comment">
-          <a href=""><img src="/images/avatar.jpeg" /></a>
+          <a href="/user/<%= tweet.userId %>"><img src="/images/avatar.jpeg" /></a>
           <div class="comments-comment-content">
             <div class="comments-comment-content-nameDate">
-              <a href="">
+              <a href="/user/<%= tweet.userId %>">
                 <h3 class="comments-comment-content-username"><%= tweet.username %></h3>
               </a>
               <span class="comments-comment-content-date"><%= tweet.createdAt %></span>

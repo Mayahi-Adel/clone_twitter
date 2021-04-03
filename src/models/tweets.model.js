@@ -29,7 +29,18 @@ exports.addOne = (tweet, userId, callback) => {
 }
 
 exports.findById = (id, callback) => {
-    db.query(`SELECT *, DATE_FORMAT(createdAt, '%d/%m/%Y %H:%i:%s') AS createdAt FROM Users INNER JOIN Tweets ON Tweets.userId = Users.id WHERE userId = "${id} ORDER BY DATE DESC"`, (error, result) => {
+    db.query(`SELECT *, DATE_FORMAT(createdAt, '%d/%m/%Y %H:%i:%s') AS createdAt FROM Users INNER JOIN Tweets ON Tweets.userId = Users.id WHERE userId = "${id} ORDER BY tweets.id "`, (error, result) => {
+        if (error){
+            console.log('error: ', error);
+            callback(error, null);
+            return;
+        }
+       
+        callback(null, result);
+    })
+}
+exports.findProfilById = (id, callback) => {
+    db.query(`SELECT * FROM Users  WHERE Id = "${id} "`, (error, result) => {
         if (error){
             console.log('error: ', error);
             callback(error, null);

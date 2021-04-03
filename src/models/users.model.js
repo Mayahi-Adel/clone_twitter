@@ -22,22 +22,3 @@ exports.create = (user, callback) => {
         callback(null, result);
     })
 }
-
-
-
-
-
-
-// exports.create = (user, callback) => {
-
-//     db.query("INSERT INTO Users ()", (error, result) => {
-//         if (error){
-//             console.log('error: ', error);
-//             callback(error, null);
-//             return;
-//         }
-       
-//         callback(null, result);
-
-//     })
-// }

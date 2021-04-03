@@ -42,22 +42,48 @@ exports.addTweet = (request, response) => {
 exports.myTweets = (req, res) => {
     const id = req.params.id;
 
+    const connectedUserId = req.cookies.user;
+    
+
     Tweets.findById(id, (error, data) => {
         if(error){
             req.send(error.message)
-        } else {
+        } 
+        if (data.length !== 0) {
+
             const user = 
-            {   
-                firstname: data[0].firstname,
-                lastname: data[0].lastname,
-                city: data[0].city,
-                username: data[0].username,
-                id: data[0].userId
+                {   
+                    firstname: data[0].firstname,
+                    lastname: data[0].lastname,
+                    city: data[0].city,
+                    username: data[0].username,
+                    id: data[0].userId
+                }
+        
+            if (!connectedUserId) {
+                res.render("profile.ejs", { data, user });
+            } else {
+                res.render("profile.ejs", { data, user, connectedUserId });
             }
-            
-            res.render("profile.ejs", { data, user });
+        } else {
+
+            Tweets.findProfilById(connectedUserId, (error, data_user) => {
+                if(error){
+                    req.send(error.message)
+                } 
+                const user = 
+                {   
+                    firstname: data_user[0].firstname,
+                    lastname: data_user[0].lastname,
+                    city: data_user[0].city,
+                    username: data_user[0].username,
+                    id: data_user[0].userId
+                }
+                res.render("profile.ejs", {data, user, connectedUserId });
+            })
         }
     })
+    
 }
 
 exports.updateTweet = (req, res) => {

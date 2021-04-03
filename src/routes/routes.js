@@ -14,11 +14,11 @@ router.post("/login", usersControllers.authenticate);
 router.get("/logout", usersControllers.logout);
 
 
-// home page (20 latest tweets)
+// home page 
 router.get("/", isAuth, tweetsControllers.findAll);
 router.post("/tweet", tweetsControllers.addTweet);
 router.post("/tweet/edit", tweetsControllers.updateTweet);
-router.get("/tweet/delete/:userId/:tweetId", tweetsControllers.deleteTweet)
+router.get("/tweet/delete/:userId/:tweetId", isAuth, tweetsControllers.deleteTweet)
 
 router.get("/user/:id", isAuth, tweetsControllers.myTweets)
 //router.get("/profil", isAuth, tweetsControllers.userProfile)
